@@ -1,0 +1,15 @@
+.idea/
+.vscode/
+node_modules
+*.log
+*.tar.gz
+*.tgz
+*.local
+*.local.*
+*.tmp
+.DS_Store
+thumbs.db
+
+!.codex/config.toml
+!.codex/rules/
+!.codex/skills/
