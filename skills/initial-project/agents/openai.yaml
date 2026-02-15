@@ -1,0 +1,4 @@
+interface:
+  display_name: "项目初始化工具"
+  short_description: "通过对话识别项目类型并按偏好初始化 Node/Vite/Next/npm 项目"
+  default_prompt: "通过提问确认项目类型与仓库结构后，按偏好初始化项目，并输出执行命令与结果摘要。"
