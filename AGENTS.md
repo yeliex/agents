@@ -71,13 +71,7 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Prefer targeted searches, focused file sections, nearby call sites, capped logs, and scoped validation. Avoid running validation commands like npm run build, npm run test, or npm run lint unless absolutely necessary. Run these commands with rtk when available, and a byte cap when needed.
     - Run tests or lints before committing is necessary.
 - Protect context usage. **Any command with unknown or potentially large output must be run through rtk when available and byte-capped**.
-    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available. 
-
-For example: Byte-cap unknown or potentially large output. Line caps alone are unsafe because a single line can be huge.
-```shell
-rtk COMMAND 2>&1 | head -c 4000
-rtk COMMAND 2>&1 | tail -c 4000
-```
+    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available.
 
 ### Abstraction / Refactor Policy
 
