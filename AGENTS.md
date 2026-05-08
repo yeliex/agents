@@ -7,7 +7,7 @@ Before implementing:
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
-- Before making changes, propose a brief implementation plan unless explicitly instructed to proceed.
+- Before making changes, propose a brief implementation plan, ask for explicit user confirmation.
 
 ## 2. Simplicity First
 
@@ -60,20 +60,40 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 
 - Read relevant source files before making any modification.
 - Add dependencies only through package manager commands, never edit dependency manifest or lock files directly.
-- Follow `commitlint` / `config-conventional` for commit messages.
-- When creating commits or pr, append the required commit attribution trailer.
-- Check changesets before committing.
-- Always review code before committing.
 - When have to use un-common workaround(for example: `as any`), ask.
 - Use Node.js for temporary scripts.
 - Keep type definitions close to where they are used.
 
+### Context Discipline
+- Protect context aggressively.
+- Answer the narrow question first. Inspect the smallest relevant file, symbol, route, component, diff, log, or test output.
+- Avoid dumping full files, full logs, unrelated directories, broad repo searches, large diffs, or generated output after the relevant code is found.
+- Prefer targeted searches, focused file sections, nearby call sites, capped logs, and scoped validation. Avoid running validation commands like npm run build, npm run test, or npm run lint unless absolutely necessary. Run these commands with rtk when available, and a byte cap when needed.
+    - Run tests or lints before committing is necessary.
+- Protect context usage. **Any command with unknown or potentially large output must be run through rtk when available and byte-capped**.
+    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available. 
+
+For example: Byte-cap unknown or potentially large output. Line caps alone are unsafe because a single line can be huge.
+```shell
+rtk COMMAND 2>&1 | head -c 4000
+rtk COMMAND 2>&1 | tail -c 4000
+```
+
 ### Abstraction / Refactor Policy
 
+- Search for existing helpers before introducing a new one.
 - Do NOT extract helper functions or constants just because code repeats.
-- Only introduce a new helper when ALL of the following are true:
+- Only introduce new helpers when ALL of the following are true:
     1. The same logic appears in 3 or more call sites.
     2. Inputs and outputs are naturally typed and meaningful.
     3. The abstraction reduces reader complexity instead of increasing it.
 - Prefer duplication over the wrong abstraction.
-- Search for existing helpers before introducing a new one.
+
+### Commit Policy
+- Follow `commitlint` / `config-conventional` for commit messages.
+- Always review code before committing.
+- Before commit or create PR, always check changeset config, add necessary changesets.
+- Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <support@openai.com>"`).
+
+## Rules
+- Always use 简体中文 to response、plan or comment, unless explicitly asked. 
