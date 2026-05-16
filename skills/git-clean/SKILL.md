@@ -1,6 +1,6 @@
 ---
 name: git-clean
-description: 按用户需求清理 Git 仓库和远端，包括清理本地分支、远端分支、失效引用，以及其它需要先检查再删除的 Git 清理任务。
+description: Clean Git repositories and remotes based on user requests, including local branches, remote branches, stale refs, and other Git cleanup tasks that require inspection before deletion.
 ---
 
 # Git Clean
