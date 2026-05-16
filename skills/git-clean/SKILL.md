@@ -1,6 +1,6 @@
 ---
 name: git-clean
-description: Clean Git repository clutter with judgment and confirmation. Use when the user asks to clean Git branches, prune stale refs, remove local branches whose upstream is gone, delete remote branches already merged by merge commit, squash merge, or PR status, or perform related Git cleanup tasks that require inspecting repository state before deleting anything.
+description: 按用户需求清理 Git 仓库和远端，包括清理本地分支、远端分支、失效引用，以及其它需要先检查再删除的 Git 清理任务。
 ---
 
 # Git Clean
