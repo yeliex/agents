@@ -1,0 +1,4 @@
+interface:
+  display_name: "Git Clean"
+  short_description: "Inspect and clean safe Git branch cleanup candidates"
+  default_prompt: "Use $git-clean to inspect safe Git cleanup candidates and propose branch cleanup commands."
