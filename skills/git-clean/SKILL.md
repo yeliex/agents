@@ -19,30 +19,35 @@ Default to inspection and a deletion plan first. Delete only after the user conf
    - Run `git fetch --prune --all`.
    - Determine the default remote branch with `git symbolic-ref refs/remotes/origin/HEAD --short` when available. If it is unavailable, infer from common defaults such as `origin/main` or `origin/master`, and say that it is inferred.
 
-2. Identify protected branches:
+2. Sync the local `master` branch when requested or relevant:
+   - If local `master` and `origin/master` both exist, and the worktree is clean or the user's current work is not at risk, update it with `git switch master` followed by `git rebase origin/master`.
+   - If switching branches would disturb uncommitted work, ask before stashing or skip this step and explain why.
+   - If the repository uses another default branch such as `main`, apply the same judgment to that branch only when it matches the user's request.
+
+3. Identify protected branches:
    - Protect the current branch.
    - Protect the default branch and its local equivalent.
    - Protect common long-lived branches such as `main`, `master`, `develop`, `dev`, `release`, `preview`, and production branches visible in the repo.
    - If a branch looks long-lived or environment-specific, leave it out unless the user explicitly includes it.
 
-3. Find local cleanup candidates:
+4. Find local cleanup candidates:
    - Use `git branch -vv` to find local branches whose upstream is marked `[gone]`.
    - Do not assume `[gone]` means safe to delete. Check recent commits or PR state when the branch name looks important or the branch contains work not present in the default branch.
    - Prefer `git branch -d <branch>` for normal deletion.
    - If `-d` fails because the branch was squash-merged or rebased, do not treat that as a blocker by itself. Explain the evidence and ask before using `git branch -D <branch>`.
 
-4. Find remote cleanup candidates:
+5. Find remote cleanup candidates:
    - Use `git branch -r --merged <default-remote-branch>` for remote branches merged by commit topology.
    - Exclude `origin/HEAD`, the default branch, protected branches, and non-origin remotes unless the user asked for them.
    - For squash-merged branches, topology may not show them as merged. If GitHub CLI is available, use PR evidence such as `gh pr list --state merged --head <owner>:<branch>` or `gh pr view` when needed.
    - If PR evidence is unavailable, use conservative judgment from branch name, commit relationship, and user intent; keep ambiguous branches in a "needs confirmation" group.
 
-5. Present a cleanup plan before deleting:
+6. Present a cleanup plan before deleting:
    - Group candidates as local branches, remote branches, and ambiguous branches.
    - For each branch, include the reason, for example `[gone] upstream`, merged into `origin/main`, merged PR found, or likely squash merge.
    - Show the exact commands that would run.
 
-6. Execute after confirmation:
+7. Execute after confirmation:
    - Delete local branches with `git branch -d <branch>` when possible.
    - Use `git branch -D <branch>` only after separately stating why `-d` is insufficient and the user confirms force deletion.
    - Delete remote branches with `git push <remote> --delete <branch>`.
