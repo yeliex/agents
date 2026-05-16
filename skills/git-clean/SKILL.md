@@ -1,6 +1,6 @@
 ---
 name: git-clean
-description: Clean Git repositories and remotes based on user requests, including local branches, remote branches, stale refs, and other Git cleanup tasks that require inspection before deletion.
+description: Clean Git repositories and remotes based on user requests.
 ---
 
 # Git Clean
