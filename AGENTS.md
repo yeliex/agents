@@ -56,6 +56,25 @@ For multi-step tasks, state a brief plan:
 
 Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
 
+## 5. Comment With Intent
+
+**Explain why. Don't narrate what.**
+
+Write comments when they reduce future reader effort:
+- Explain intent, tradeoffs, invariants, ordering requirements, edge cases, or historical reasons.
+- Comment code that looks strange, overly simple, out of order, or intentionally different from the obvious solution.
+- Document contracts for non-trivial functions: assumptions, side effects, caller responsibilities, and error behavior.
+- Add short design notes for complex modules or workflows.
+- Use guide comments to split long procedural code into readable stages.
+
+Avoid comments that only repeat the code.
+Avoid commented-out backup code.
+Avoid vague `TODO` / `FIXME` comments without context.
+
+When changing behavior, update nearby comments or delete stale ones.
+
+Ask yourself: "Will this help someone safely change the code later?" If not, remove it.
+
 ## Project Constraints
 
 - Read relevant source files before making any modification.
@@ -65,13 +84,16 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Keep type definitions close to where they are used.
 
 ### Context Discipline
-- Protect context aggressively.
-- Answer the narrow question first. Inspect the smallest relevant file, symbol, route, component, diff, log, or test output.
-- Avoid dumping full files, full logs, unrelated directories, broad repo searches, large diffs, or generated output after the relevant code is found.
-- Prefer targeted searches, focused file sections, nearby call sites, capped logs, and scoped validation. Avoid running validation commands like npm run build, npm run test, or npm run lint unless absolutely necessary. Run these commands with rtk when available, and a byte cap when needed.
+- Avoid running validation commands like npm run build, npm run test, or npm run lint unless absolutely necessary. Run these commands with rtk when available, and a byte cap when needed.
     - Run tests or lints before committing is necessary.
 - Protect context usage. **Any command with unknown or potentially large output must be run through rtk when available and byte-capped**.
-    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available.
+    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available. @/Users/yeliex/.codex/RTK.md
+    - Prefer call command directly with `rtk` instead of using aliases or functions that bypass it.
+
+Examples:
+```bash
+rtk tsc # instead of calling `npm run build` which is defined in package.json#scripts
+```
 
 ### Abstraction / Refactor Policy
 
@@ -87,7 +109,8 @@ Strong success criteria let you loop independently. Weak criteria ("make it work
 - Follow `commitlint` / `config-conventional` for commit messages.
 - Always review code before committing.
 - Before commit or create PR, always check changeset config, add necessary changesets.
-- Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <support@openai.com>"`).
+- Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <codex@openai.com>"`).
 
 ## Rules
-- Always use 简体中文 to response、plan or comment, unless explicitly asked. 
+- Always use 简体中文 to response、plan or comment, unless explicitly asked.
+- Always use the 1Password MCP server if you need to work with the 1Password developer environments without me having to explicitly ask.
