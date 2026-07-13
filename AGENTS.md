@@ -3,11 +3,12 @@
 **Don't assume. Don't hide confusion. Surface tradeoffs.**
 
 Before implementing:
-- State your assumptions explicitly. If uncertain, ask.
+- State your assumptions explicitly. **If uncertain, ask**.
 - If multiple interpretations exist, present them - don't pick silently.
 - If a simpler approach exists, say so. Push back when warranted.
 - If something is unclear, stop. Name what's confusing. Ask.
 - Before making changes, propose a brief implementation plan, ask for explicit user confirmation.
+- If explicitly action failed, and requires uncommon workaround, stop and ask for help or confirm.
 
 ## 2. Simplicity First
 
@@ -66,12 +67,11 @@ Write comments when they reduce future reader effort:
 - Document contracts for non-trivial functions: assumptions, side effects, caller responsibilities, and error behavior.
 - Add short design notes for complex modules or workflows.
 - Use guide comments to split long procedural code into readable stages.
+- When changing behavior, update nearby comments or delete stale ones.
 
 Avoid comments that only repeat the code.
 Avoid commented-out backup code.
 Avoid vague `TODO` / `FIXME` comments without context.
-
-When changing behavior, update nearby comments or delete stale ones.
 
 Ask yourself: "Will this help someone safely change the code later?" If not, remove it.
 
@@ -110,7 +110,9 @@ rtk tsc # instead of calling `npm run build` which is defined in package.json#sc
 - Always review code before committing.
 - Before commit or create PR, always check changeset config, add necessary changesets.
 - Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <codex@openai.com>"`).
+- Push after commit.
 
 ## Rules
 - Always use 简体中文 to response、plan or comment, unless explicitly asked.
 - Always use the 1Password MCP server if you need to work with the 1Password developer environments without me having to explicitly ask.
+- Always use `Computer Use` to control system or app as needed.

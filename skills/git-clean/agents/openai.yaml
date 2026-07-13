@@ -2,3 +2,6 @@ interface:
   display_name: "Git Clean"
   short_description: "Inspect and clean Git repositories and remotes"
   default_prompt: "Use $git-clean to run the preset Git repository cleanup workflow directly. Do not ask me to choose an operation first."
+
+policy:
+  allow_implicit_invocation: false
