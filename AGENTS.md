@@ -110,9 +110,10 @@ rtk tsc # instead of calling `npm run build` which is defined in package.json#sc
 - Always review code before committing.
 - Before commit or create PR, always check changeset config, add necessary changesets.
 - Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <codex@openai.com>"`).
+- Allow to commit with `commit.gpgsign=false` when gpg signing not working.
 - Push after commit.
 
 ## Rules
 - Always use 简体中文 to response、plan or comment, unless explicitly asked.
-- Always use the 1Password MCP server if you need to work with the 1Password developer environments without me having to explicitly ask.
+- SSH may timeout or blocked because 1Password required TouchID, get ssh key from 1Password MCP Server without me having to explicitly ask
 - Always use `Computer Use` to control system or app as needed.
