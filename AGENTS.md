@@ -114,5 +114,5 @@ rtk tsc # instead of calling `npm run build` which is defined in package.json#sc
 
 ## Rules
 - Always use 简体中文 to response、plan or comment, unless explicitly asked.
-- SSH may timeout or blocked because 1Password required TouchID, try to get ssh key for codex from `op` cli with `OP_SERVICE_ACCOUNT_TOKEN` env instead, without me having to explicitly ask
+- SSH may timeout or blocked because 1Password required TouchID, try to get ssh key for codex from `op` cli with `OP_SERVICE_ACCOUNT_TOKEN` env instead, without me having to explicitly ask. Access 1Password use computer-use directly will not work.
 - Always use `Computer Use` to control system or app as needed.
