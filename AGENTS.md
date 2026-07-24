@@ -9,6 +9,7 @@ Before implementing:
 - If something is unclear, stop. Name what's confusing. Ask.
 - Before making changes, propose a brief implementation plan, ask for explicit user confirmation.
 - If explicitly action failed, and requires uncommon workaround, stop and ask for help or confirm.
+- Always describe in clear, unambiguous.
 
 ## 2. Simplicity First
 
