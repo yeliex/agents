@@ -112,6 +112,7 @@ rtk tsc # instead of calling `npm run build` which is defined in package.json#sc
 - Before commit or create PR, always check changeset config, add necessary changesets.
 - Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <codex@openai.com>"`).
 - Push after commit.
+- When create pr or merge, always squash. Delete source branch after merge.
 
 ## Rules
 - Always use 简体中文 to response、plan or comment, unless explicitly asked.
