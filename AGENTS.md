@@ -1,27 +1,23 @@
 ## 1. Think Before Coding
 
-**Don't assume. Don't hide confusion. Surface tradeoffs.**
+**Surface important uncertainty. Use evidence to choose the next step.**
 
-Before implementing:
-- State your assumptions explicitly. **If uncertain, ask**.
-- If multiple interpretations exist, present them - don't pick silently.
+- Resolve routine details from context; state assumptions and ask when ambiguity materially changes the outcome or scope.
+- Proceed with necessary work already authorized by the user.
 - If a simpler approach exists, say so. Push back when warranted.
-- If something is unclear, stop. Name what's confusing. Ask.
-- Before making changes, propose a brief implementation plan, ask for explicit user confirmation.
-- If explicitly action failed, and requires uncommon workaround, stop and ask for help or confirm.
-- Always describe in clear, unambiguous.
+- After a failure, choose the next step from the error and observed state.
+- Don't repeat a failed approach without new evidence or changed conditions.
+- If no evidence-backed next step is available, report the blocker instead of trying speculative workarounds.
+- Ask before expanding scope or bypassing a constraint; explain the specific decision needed.
 
 ## 2. Simplicity First
 
 **Minimum code that solves the problem. Nothing speculative.**
 
 - No features beyond what was asked.
-- No abstractions for single-use code.
-- No "flexibility" or "configurability" that wasn't requested.
+- No speculative flexibility, configurability, or compatibility layers.
 - No error handling for impossible scenarios.
-- If you write 200 lines and it could be 50, rewrite it.
-
-Ask yourself: "Would a senior engineer say this is overcomplicated?" If yes, simplify.
+- Prefer existing capabilities and straightforward code.
 
 ## 3. Surgical Changes
 
@@ -32,89 +28,72 @@ When editing existing code:
 - Don't "improve" adjacent code, comments, or formatting.
 - Don't refactor things that aren't broken.
 - Match existing style, even if you'd do it differently.
-- If you notice unrelated dead code, mention it - don't delete it.
+- Mention unrelated issues when useful; don't fix them without authorization.
 
 When your changes create orphans:
 - Remove imports/variables/functions that YOUR changes made unused.
 - Don't remove pre-existing dead code unless asked.
 
-The test: Every changed line should trace directly to the user's request.
-
 ## 4. Goal-Driven Execution
 
-**Define success criteria. Loop until verified.**
+**Define completion. Verify what matters.**
 
-Transform tasks into verifiable goals:
-- "Add validation" → "Write tests for invalid inputs, then make them pass"
-- "Fix the bug" → "Write a test that reproduces it, then make it pass"
-- "Refactor X" → "Ensure tests pass before and after"
-
-For multi-step tasks, state a brief plan:
-```
-1. [Step] → verify: [check]
-2. [Step] → verify: [check]
-3. [Step] → verify: [check]
-```
-
-Strong success criteria let you loop independently. Weak criteria ("make it work") require constant clarification.
+- For multi-step tasks, briefly state the outcome, plan, and completion criteria.
+- Match the deliverable to the request: an audit produces findings; an implementation produces a working change.
+- Complete the requested deliverable and relevant verification; report unresolved blockers.
+- Run checks appropriate to the change and required by the repository before committing; don't default to full build, test, or lint runs.
+- Add tests when they meaningfully protect changed behavior.
+- Once checks pass, repeat or broaden them only when new changes or evidence justify it.
 
 ## 5. Comment With Intent
 
 **Explain why. Don't narrate what.**
 
 Write comments when they reduce future reader effort:
-- Explain intent, tradeoffs, invariants, ordering requirements, edge cases, or historical reasons.
-- Comment code that looks strange, overly simple, out of order, or intentionally different from the obvious solution.
-- Document contracts for non-trivial functions: assumptions, side effects, caller responsibilities, and error behavior.
-- Add short design notes for complex modules or workflows.
-- Use guide comments to split long procedural code into readable stages.
+- Explain intent, tradeoffs, invariants, and non-obvious behavior.
+- Document assumptions, side effects, and caller responsibilities when they are not clear from the code.
 - When changing behavior, update nearby comments or delete stale ones.
 
 Avoid comments that only repeat the code.
 Avoid commented-out backup code.
 Avoid vague `TODO` / `FIXME` comments without context.
 
-Ask yourself: "Will this help someone safely change the code later?" If not, remove it.
-
 ## Project Constraints
 
-- Read relevant source files before making any modification.
-- Add dependencies only through package manager commands, never edit dependency manifest or lock files directly.
-- When have to use un-common workaround(for example: `as any`), ask.
+- Read the relevant source and contracts needed for the change; don't repeatedly reload unchanged context.
+- Add or change dependencies through package manager commands, never edit dependency fields or lock files directly.
+- Avoid workarounds such as `as any` that hide unresolved problems.
 - Use Node.js for temporary scripts.
 - Keep type definitions close to where they are used.
 
 ### Context Discipline
-- Avoid running validation commands like npm run build, npm run test, or npm run lint unless absolutely necessary. Run these commands with rtk when available, and a byte cap when needed.
-    - Run tests or lints before committing is necessary.
-- Protect context usage. **Any command with unknown or potentially large output must be run through rtk when available and byte-capped**.
-    - Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available. @/Users/yeliex/.codex/RTK.md
-    - Prefer call command directly with `rtk` instead of using aliases or functions that bypass it.
 
-Examples:
-```bash
-rtk tsc # instead of calling `npm run build` which is defined in package.json#scripts
-```
+- Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available.
+- Call commands directly through `rtk`, without aliases or functions that bypass it.
+- Byte-cap potentially large output while preserving relevant errors and completion status.
 
 ### Abstraction / Refactor Policy
 
 - Search for existing helpers before introducing a new one.
 - Do NOT extract helper functions or constants just because code repeats.
-- Only introduce new helpers when ALL of the following are true:
-    1. The same logic appears in 3 or more call sites.
-    2. Inputs and outputs are naturally typed and meaningful.
-    3. The abstraction reduces reader complexity instead of increasing it.
+- Introduce abstractions when they express a clear responsibility, isolate a meaningful constraint, or simplify existing callers.
+- Keep inputs and outputs naturally typed and meaningful; don't generalize for hypothetical future callers.
 - Prefer duplication over the wrong abstraction.
 
 ### Commit Policy
-- Follow `commitlint` / `config-conventional` for commit messages.
-- Always review code before committing.
-- Before commit or create PR, always check changeset config, add necessary changesets.
-- Prefer commit with trailer (for example: `git commit --trailer "Co-authored-by: Codex <codex@openai.com>"`).
-- Push after commit.
-- When create pr or merge, always squash. Delete source branch after merge.
+
+- Before committing, review the diff and confirm the repository, branch, and intended changes.
+- Don't include unrelated or pre-existing user changes.
+- Follow the repository's commitlint / Conventional Commits rules.
+- Before commit or PR creation, check changeset configuration and add changesets when required.
+- Prefer a trailer: `Co-authored-by: Codex <codex@openai.com>`.
+- Push after commit unless the user requests a local-only commit.
+- Configure PRs/MRs for squash where supported. Creating one does not authorize merging it.
+- When merging is authorized, squash and delete the source branch after a successful merge.
 
 ## Rules
-- Always use 简体中文 to response、plan or comment, unless explicitly asked.
-- SSH may timeout or blocked because 1Password required TouchID, try to get ssh key for codex from `op` cli with `OP_SERVICE_ACCOUNT_TOKEN` env instead, without me having to explicitly ask. Access 1Password use computer-use directly will not work.
-- Always use `Computer Use` to control system or app as needed.
+
+- Always use 简体中文 for responses, plans, and comments, unless explicitly asked otherwise.
+- If SSH is blocked by 1Password TouchID, use the configured `OP_SERVICE_ACCOUNT_TOKEN` with `op` CLI to obtain the Codex SSH key. Don't use computer-use to access 1Password or expose credentials in output.
+- Use `Computer Use` when system or app UI interaction is needed.
+- `lark-cli` depends on keychain access. When sandbox restrictions require additional permission, use the host's supported approval mechanism. In an unrestricted environment, run directly without requesting redundant elevation.
