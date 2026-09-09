@@ -63,7 +63,6 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - Read the relevant source and contracts needed for the change; don't repeatedly reload unchanged context.
 - Add or change dependencies through package manager commands, never edit dependency fields or lock files directly.
 - Avoid workarounds such as `as any` that hide unresolved problems.
-- Use Node.js for temporary scripts.
 - Keep type definitions close to where they are used.
 
 ### Context Discipline
@@ -97,3 +96,4 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - If SSH is blocked by 1Password TouchID, use the configured `OP_SERVICE_ACCOUNT_TOKEN` with `op` CLI to obtain the Codex SSH key. Don't use computer-use to access 1Password or expose credentials in output.
 - Use `Computer Use` when system or app UI interaction is needed.
 - `lark-cli` depends on keychain access. When sandbox restrictions require additional permission, use the host's supported approval mechanism. In an unrestricted environment, run directly without requesting redundant elevation.
+- When use private registry, check package version and try to sync before add or update packages.
