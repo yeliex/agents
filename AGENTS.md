@@ -67,8 +67,6 @@ Avoid vague `TODO` / `FIXME` comments without context.
 
 ### Context Discipline
 
-- Use `rtk` for search, file inspection, diffs, logs, tests, and builds when available.
-- Call commands directly through `rtk`, without aliases or functions that bypass it.
 - Byte-cap potentially large output while preserving relevant errors and completion status.
 
 ### Abstraction / Refactor Policy
@@ -96,4 +94,5 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - If SSH is blocked by 1Password TouchID, use the configured `OP_SERVICE_ACCOUNT_TOKEN` with `op` CLI to obtain the Codex SSH key. Don't use computer-use to access 1Password or expose credentials in output.
 - Use `Computer Use` when system or app UI interaction is needed.
 - `lark-cli` depends on keychain access. When sandbox restrictions require additional permission, use the host's supported approval mechanism. In an unrestricted environment, run directly without requesting redundant elevation.
-- When use private registry, check package version and try to sync before add or update packages.
+- When use private registry, check package version and try to sync before add or update package.
+- Use `master` as default branch for new project
