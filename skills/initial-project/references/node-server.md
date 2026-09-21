@@ -1,4 +1,4 @@
-# Node Server Playbook（强制默认栈）
+# Node Server Playbook（默认栈）
 
 ## 目标
 

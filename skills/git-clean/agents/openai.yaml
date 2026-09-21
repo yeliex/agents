@@ -1,7 +1,7 @@
 interface:
   display_name: "Git Clean"
-  short_description: "Inspect and clean Git repositories and remotes"
-  default_prompt: "Use $git-clean to run the preset Git repository cleanup workflow directly. Do not ask me to choose an operation first."
+  short_description: "Clean up leftover local and remote Git branches"
+  default_prompt: "Use $git-clean to safely and quickly clean up leftover local and remote branches in this repository."
 
 policy:
   allow_implicit_invocation: false

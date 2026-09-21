@@ -1,4 +1,4 @@
 interface:
   display_name: "初始化项目"
-  short_description: "通过对话识别项目类型并按偏好初始化 Node/Vite/Next/npm 项目"
-  default_prompt: "通过提问确认项目类型与仓库结构后，按偏好初始化项目，并输出执行命令与结果摘要。目前支持初始化前端与Node项目。"
+  short_description: "根据需求与上下文，按偏好初始化 Node/Vite/Next/npm 项目"
+  default_prompt: "使用 $initial-project 根据我的要求和当前目录初始化项目，仅在关键选择无法确定时提问，并完成必要验证、说明结果。"
