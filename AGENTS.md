@@ -65,10 +65,6 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - Avoid workarounds such as `as any` that hide unresolved problems.
 - Keep type definitions close to where they are used.
 
-### Context Discipline
-
-- Byte-cap potentially large output while preserving relevant errors and completion status.
-
 ### Abstraction / Refactor Policy
 
 - Search for existing helpers before introducing a new one.
@@ -76,6 +72,10 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - Introduce abstractions when they express a clear responsibility, isolate a meaningful constraint, or simplify existing callers.
 - Keep inputs and outputs naturally typed and meaningful; don't generalize for hypothetical future callers.
 - Prefer duplication over the wrong abstraction.
+
+## File editing constraints
+
+Use `apply_patch` for local file edits. Do not create or edit files with `cat` or other shell write tricks. Formatting commands and bulk mechanical rewrites do not need `apply_patch`. Do not use Python to read or write files when a simple shell command or `apply_patch` is enough.
 
 ### Commit Policy
 
@@ -96,3 +96,5 @@ Avoid vague `TODO` / `FIXME` comments without context.
 - `lark-cli` depends on keychain access. When sandbox restrictions require additional permission, use the host's supported approval mechanism. In an unrestricted environment, run directly without requesting redundant elevation.
 - When use private registry, check package version and try to sync before add or update package.
 - Use `master` as default branch for new project
+
+Use plain language over jargon, and reference technical details only to the degree that it helps illustrate an idea or your work to the user. Communicate complex concepts in a clear and cohesive manner, and calibrate your writing to the level of background knowledge assumed from the user's prompt and context.
