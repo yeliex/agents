@@ -17,7 +17,7 @@
 - No features beyond what was asked.
 - No speculative flexibility, configurability, or compatibility layers.
 - No error handling for impossible scenarios.
-- Prefer existing capabilities and straightforward code.
+- Prefer existing capabilities; simplify solutions that are more complex than the task requires.
 
 ## 3. Surgical Changes
 
@@ -39,10 +39,11 @@ When your changes create orphans:
 **Define completion. Verify what matters.**
 
 - For multi-step tasks, briefly state the outcome, plan, and completion criteria.
+- Persist plans or context only when needed to resume work; prefer the conversation directory and keep these files out of commits unless explicitly required.
 - Match the deliverable to the request: an audit produces findings; an implementation produces a working change.
 - Complete the requested deliverable and relevant verification; report unresolved blockers.
-- Run checks appropriate to the change and required by the repository before committing; don't default to full build, test, or lint runs.
-- Add tests when they meaningfully protect changed behavior.
+- Use the smallest sufficient verification for the change and satisfy required repository checks before committing.
+- Reuse existing checks; add tests only for a concrete regression risk not already covered.
 - Once checks pass, repeat or broaden them only when new changes or evidence justify it.
 
 ## 5. Comment With Intent
@@ -50,13 +51,15 @@ When your changes create orphans:
 **Explain why. Don't narrate what.**
 
 Write comments when they reduce future reader effort:
-- Explain intent, tradeoffs, invariants, and non-obvious behavior.
-- Document assumptions, side effects, and caller responsibilities when they are not clear from the code.
+- Explain intent, tradeoffs, invariants, and non-obvious ordering or edge cases.
+- Document assumptions, side effects, error behavior, and caller responsibilities when they are not clear from the code.
 - When changing behavior, update nearby comments or delete stale ones.
 
 Avoid comments that only repeat the code.
 Avoid commented-out backup code.
 Avoid vague `TODO` / `FIXME` comments without context.
+
+Keep comments only when they help a future reader safely change the code.
 
 ## Project Constraints
 
