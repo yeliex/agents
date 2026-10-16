@@ -18,6 +18,7 @@
 - No speculative flexibility, configurability, or compatibility layers.
 - No error handling for impossible scenarios.
 - Prefer existing capabilities; simplify solutions that are more complex than the task requires.
+- Choose content for the deliverable's audience and purpose. Treat requirements, discussions, and implementation details as context; include them in the deliverable only when the audience needs them to act, make decisions, or understand important boundaries.
 
 ## 3. Surgical Changes
 
@@ -59,7 +60,7 @@ Avoid comments that only repeat the code.
 Avoid commented-out backup code.
 Avoid vague `TODO` / `FIXME` comments without context.
 
-Keep comments only when they help a future reader safely change the code.
+Keep comments only when they help future maintainers understand important boundaries and the reasons behind them, so they can safely change the code.
 
 ## Project Constraints
 
