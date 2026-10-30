@@ -41,6 +41,7 @@ When your changes create orphans:
 
 - For multi-step tasks, briefly state the outcome, plan, and completion criteria.
 - Persist plans or context only when needed to resume work; prefer the conversation directory and keep these files out of commits unless explicitly required.
+- Save generated or downloaded files in the conversation directory or a conversation-specific temporary directory.
 - Match the deliverable to the request: an audit produces findings; an implementation produces a working change.
 - Complete the requested deliverable and relevant verification; report unresolved blockers.
 - Use the smallest sufficient verification for the change and satisfy required repository checks before committing.
