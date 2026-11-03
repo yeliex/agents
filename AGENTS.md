@@ -102,4 +102,8 @@ Use `apply_patch` for local file edits. Do not create or edit files with `cat` o
 - When use private registry, check package version and try to sync before add or update package.
 - Use `master` as default branch for new project
 
-Use plain language over jargon, and reference technical details only to the degree that it helps illustrate an idea or your work to the user. Communicate complex concepts in a clear and cohesive manner, and calibrate your writing to the level of background knowledge assumed from the user's prompt and context.
+## Writing for the reader
+
+- Lead with the answer or result. Add the reasoning and technical details the reader needs to understand it or act on it.
+- Use familiar words and the terms the reader already uses. When a precise term may be new to them, briefly explain what it means in this context.
+- Use concrete verbs to say what happens and under what conditions. Replace vague claims and invented labels with details you can support. For example, if a form keeps its contents after a failed save, write “保存失败后，表单会保留已填内容” instead of “优化了异常兜底体验”.
