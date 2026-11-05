@@ -1,50 +1,50 @@
-# iOS 导出与验收
+# iOS export and validation
 
-先确认目标系统和项目采用的图标格式。使用时核对 Apple 当前规范以及本机 Xcode 支持的外观。本技能附带脚本处理已确认的方形原稿，保持其比例和构图。导出前先完成 [构图与元素占比检查](../SKILL.md#构图与元素占比)；脚本不会自动为偏满的构图缩小主体，编译通过也不能替代这项检查。
+Confirm the target system and the project's icon format. Check Apple's current requirements and the appearances supported by the installed Xcode. The included script packages approved square artwork while preserving its proportions and composition. Complete the [composition and artwork scale check](../SKILL.md#composition-and-artwork-scale) first: the script does not automatically shrink an overcrowded subject, and successful compilation does not replace this check.
 
-## 环境与执行
+## Environment and commands
 
-生成图片本身使用宿主图像工具。以下 iOS 导出脚本需要 macOS、已选择的完整 Xcode、Icon Composer、Python 3.9+ 和 ImageMagick 7 的 `magick` 命令。
+Generate images with the host's image tool. The iOS export script requires macOS, a selected full Xcode installation, Icon Composer, Python 3.9+, and ImageMagick 7's `magick` command.
 
-脚本路径相对于本技能目录，输入和输出使用绝对路径。输出目录必须尚不存在。用 `--minimum-ios` 指定目标项目的最低 iOS 版本，省略时按 18.0 校验。
+Resolve the script path relative to this skill directory and use absolute input and output paths. The output directory must not already exist. Set `--minimum-ios` to the project's minimum deployment target; the default is 18.0.
 
 ```sh
-python3 <skill目录>/scripts/export_ios.py \
-  --source /项目/icon-source.png \
-  --output /项目/outputs/AppIcon
+python3 <skill-directory>/scripts/export_ios.py \
+  --source /project/icon-source.png \
+  --output /project/outputs/AppIcon
 ```
 
-完整画稿可以直接传入。透明前景需要明确指定背景，支持单色或由左上到右下的双色渐变。
+Complete artwork can be passed directly. Transparent foregrounds require an explicit background, either a solid color or a two-color gradient from top left to bottom right.
 
 ```sh
-python3 <skill目录>/scripts/export_ios.py \
-  --source /项目/foreground.png \
+python3 <skill-directory>/scripts/export_ios.py \
+  --source /project/foreground.png \
   --background '#E1E8DF,#B1C3AE' \
   --dark-background '#606C5E,#2F382E' \
   --asset-catalog \
-  --output /项目/outputs/AppIcon
+  --output /project/outputs/AppIcon
 ```
 
-示例颜色仅演示参数格式。其他方向的渐变可以先在已选定的完整画稿中完成，再作为完整图层输入。
+These colors demonstrate the argument format only. For other gradient directions, prepare the background in the approved complete artwork and pass that as a complete layer.
 
-使用单独确认的深色画稿时传入 `--dark-source /项目/dark-source.png`。透明的深色画稿同样需要 `--dark-background`。只有透明前景可以通过背景参数直接改变底色；完整画稿的深色外观由独立深色画稿或系统生成。
+Pass separately approved dark artwork with `--dark-source /project/dark-source.png`. A transparent dark foreground also requires `--dark-background`. Background arguments only change the background behind a transparent foreground. Complete artwork needs a separate dark image or the system-rendered appearance.
 
-## 产物与检查
+## Outputs and checks
 
-- `AppIcon.icon` 包含标准化的图像图层和已指定的背景。透明前景保留 alpha，背景在工程中可编辑。完整画稿作为完整图层保留。
-- `default.png` 及有自定义深色方案时的 `dark.png` 为 1024 × 1024 sRGB 方形导出。
-- `previews/` 包含本机 Icon Composer 的六种外观，以及 60 pt、29 pt 的 2× 预览。尺寸用于本次检查，可按实际使用位置追加预览。
-- `--asset-catalog` 额外创建 `AppIcon.appiconset`，用于需要资源目录的项目。
-- 脚本调用 `actool` 验证 iPhone、iPad 编译，临时编译文件在退出后清理。终端记录自定义外观、系统衍生外观及检查结果。
+- `AppIcon.icon` contains normalized image layers and the specified background. Transparent foregrounds retain alpha and the background remains editable. Complete artwork stays a complete layer.
+- `default.png`, and `dark.png` when a custom dark appearance is supplied, are 1024 × 1024 sRGB square exports.
+- `previews/` contains six appearances rendered by the installed Icon Composer, including 60 pt and 29 pt previews at 2×. These sizes serve the current check; add previews for other actual placements as needed.
+- `--asset-catalog` also creates `AppIcon.appiconset` for projects that need an asset catalog.
+- The script uses `actool` to validate iPhone and iPad compilation, then removes temporary build files. Its terminal report distinguishes custom and system-derived appearances and records the checks performed.
 
-打开预览检查系统裁切、边缘、缩小后的识别、深色背景中的分离度，以及透明和着色外观下的主要特征。成功编译证明资源可被当前工具链处理，系统外观的视觉检查仍需实际查看。未提供自定义深色方案时，系统 Dark 可能与默认画面相同；需要不同深色视觉时，应提供已确认的深色原稿或透明前景与深色背景，不把生成预览文件等同于完成外观适配。
+Open previews to inspect system clipping, edges, small-size recognition, separation against dark backgrounds, and identifying features in clear and tinted appearances. Compilation proves that the current toolchain can process the resources; appearance quality still requires visual inspection. Without a custom dark design, system Dark may look identical to Default. Supply approved dark artwork or a transparent foreground with a dark background when a different dark design is needed. Generating a preview file does not establish visual adaptation.
 
-默认全彩图的背景应完整覆盖方形画布。透明度规则按素材角色和外观分别处理，独立前景允许透明。当前脚本的默认和自定义深色 PNG 都是确认背景后的完整画稿；需要系统背景的透明 Dark 资源时，按目标项目约定使用原始透明图层。
+The default full-color background should cover the square canvas. Apply transparency rules according to the asset's role and appearance; separate foregrounds may be transparent. The script's default and custom dark PNGs are complete artwork composited over confirmed backgrounds. For a transparent Dark resource that uses the system background, follow the target project's convention with the original transparent layer.
 
-生成工具只有图片能力时可先交付原稿与缩小预览。缺少 Xcode 时明确列出尚未完成的原生预览和编译校验，避免将普通圆角模拟图描述成系统验证结果。
+If only image generation is available, deliver artwork and small-size previews first. If Xcode is unavailable, list the native previews and compilation checks that remain unverified. Do not describe a simulated rounded-corner image as a system-validated preview.
 
-## 规范来源
+## Sources
 
 - [Apple App icons](https://developer.apple.com/design/human-interface-guidelines/app-icons/)
 - [Icon Composer](https://developer.apple.com/documentation/xcode/creating-your-app-icon-using-icon-composer)
-- [Asset catalog 图标配置](https://developer.apple.com/documentation/xcode/configuring-your-app-icon)
+- [Asset catalog icon configuration](https://developer.apple.com/documentation/xcode/configuring-your-app-icon)

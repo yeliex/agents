@@ -1,47 +1,47 @@
 ---
 name: scene-icon
-description: 生成和修改手绘场景插画风格的 App 图标，使用清晰描边、柔和色块、自然动作与简洁场景关系。适用于创建单款图标、同系列变体或优化已选原画；需要 iOS 交付时包含 Icon Composer 导出、外观预览和 Xcode 校验。
+description: Generate and edit hand-drawn scene illustration app icons with clear outlines, soft color blocks, and natural actions. Use for individual icons, coordinated variants, or refinements to selected artwork. When iOS delivery is requested, handle Icon Composer export, appearance previews, and Xcode validation.
 ---
 
-# 场景插画图标
+# Scene Illustration Icons
 
-## 视觉语言
+## Visual language
 
-以一个明确的主体和一个能被看懂的动作或关系表达场景。使用略带手绘感的深色轮廓、柔和色块和少量明暗塑形，保持轻松、有表情的插画气质。场景中的辅助元素只承担识别或动作所需的信息，小尺寸下仍能分清主次。
+Build each scene around one clear subject and a recognizable action or relationship. Use slightly hand-drawn dark outlines, soft color blocks, and restrained shading for an expressive, relaxed illustration. Supporting elements should serve recognition or the action, with a clear hierarchy at small sizes.
 
-默认背景简洁、色彩克制，可采用轻微渐变。按产品和主体选择颜色，用户提供的色值与已确认配色优先。主体与背景分别考虑明度和色彩，避免用同一滤镜覆盖整张图。
+Default to a simple background and restrained colors, optionally with a subtle gradient. Choose colors for the product and subject; supplied values and approved palettes take priority. Consider the subject and background separately in both lightness and color instead of applying one filter to the entire image.
 
-生成入口采用场景插画风格。用户需要其他风格时沿用其指定能力或可用的相应设计技能。已有选定图标仅需 iOS 工程交付时，直接使用下文的导出流程，保持原稿风格。
+The generation workflow uses scene illustration. For other styles, use the capability or available design skill selected by the user. When existing artwork only needs iOS packaging, use the export workflow below without changing its style.
 
-## 开始与生成
+## Start and generate
 
-1. 从当前请求、项目资料和已确认结果中读取用途、主体或动作、配色与参考图。信息足够时直接执行，确实影响画面时集中询问缺少的信息。
-2. 先查看参考图。没有用户风格图时，可查看 [画风示例](assets/style-reference.png)，参考其描边、色块与质感，主体和背景按本次任务决定。区分用户选定的原画、风格参考和待修改作品，确定本轮修改范围。具体行业、构图方向和数值留白只作为项目参数。
-3. 使用宿主提供的图像生成或编辑工具，每个候选分别生成一张完整方形图。生成数量遵循用户要求，未指定时先做一款完整方案。候选对比页在生成后组合。
-4. 提示词覆盖主体与动作、手绘轮廓与色块、构图、背景和需要保留的内容。参考 [提示词组织](references/prompts.md)，只使用本轮需要的字段。让模型输出独立画面，采用方形外边界，预览圆角由系统处理。
-5. 按下文的构图检查确认元素占比，再检查缩小效果；占比偏满时先调整原稿，再做平台导出。需要修正时定位具体问题，围绕已确认原稿作局部调整。主体与辅助元素共同缩放，保持原有空间关系；局部改变比例须由识别问题或用户要求支持。
+1. Read the purpose, subject or action, palette, and references from the current request, project materials, and approved results. Proceed when enough information is available; ask for missing details together only when they materially affect the image.
+2. Inspect references first. Without a user-supplied style reference, consult the [style examples](assets/style-reference.png) for outlines, color blocks, and texture; choose subjects and backgrounds for the current task. Distinguish approved artwork, style references, and edit targets. Establish the scope of this iteration. Industry, composition direction, and numerical margins remain project-specific parameters.
+3. Use the host's image generation or editing tool. Generate each candidate as its own complete square image. Follow the requested count; when unspecified, start with one complete option. Assemble comparison sheets after generating individual images.
+4. Cover the subject and action, outlines and color blocks, composition, background, and preserved features in the prompt. Use only relevant fields from [Prompt structure](references/prompts.md). Request a standalone image with square outer edges; let the system apply rounded corners in previews.
+5. Check composition and artwork scale as described below, then inspect small-size readability. Adjust an overcrowded composition before platform export. Identify specific issues and make focused changes to the approved artwork. Scale the subject and supporting elements together to preserve their spatial relationships; changing individual proportions requires a recognition issue or an explicit user request.
 
-图像工具不可用时，说明缺少的能力并交付能够完成的准备工作。只有用户要求或已授权时才切换到付费 API；不得把未执行的生成描述成已完成。
+If image tools are unavailable, explain the missing capability and complete whatever preparation is possible. Switch to a paid API only when requested or authorized. Never describe unexecuted generation as complete.
 
-## 构图与元素占比
+## Composition and artwork scale
 
-- 将主体与必要辅助元素作为一组安排，顶部和左右保留清楚可见的背景间隔，避免为了放大主体而让整个场景挤满画布。风格参考只提供画风，不默认继承其取景或占比。
-- 保留已确认的底部承接或对齐关系，顶部和侧边仍单独检查。留白按主要视觉体量判断，次要细节可适量越过参考线；不把某个包围盒百分比或项目比例称为通用 iOS 规范。
-- 用户反馈“太大”“太满”时，优先整体缩小并重新定位原有元素，保持角色、动作、物件比例及空间关系。不单独缩小关键道具，也不重新设计原画。
-- 同时查看较大预览和实际小尺寸：较大预览检查空间是否舒展，小尺寸检查主体与动作是否清楚，系统蒙版下检查关键轮廓是否被截断。小图细节变弱时先判断哪些细节承担识别，不用整组放大填满画布来补偿。
+- Arrange the subject and necessary supporting elements as one group. Leave clearly visible background space above and on both sides instead of enlarging the scene to fill the canvas. A style reference does not automatically dictate framing or artwork scale.
+- Preserve approved grounding at the bottom or other alignment relationships while checking top and side margins separately. Judge spacing by the main visual mass; minor details may extend beyond alignment guides. Do not present a bounding-box percentage or project-specific ratio as a universal iOS requirement.
+- When the user says the artwork is too large or crowded, first reduce and reposition the existing group as a whole. Preserve the character, action, relative object sizes, and spatial relationships. Do not shrink a key prop independently or redesign the artwork.
+- Inspect both a larger preview and actual small display sizes. Use the larger view to judge spacing, the smaller views to check subject and action recognition, and the system mask to check clipping of key contours. If details weaken at small sizes, identify which ones matter for recognition instead of enlarging the entire group to fill the canvas.
 
-## 迭代与系列一致性
+## Iteration and consistency
 
-- 以最新选定原稿为基础迭代。修改构图、颜色、内容分别描述，让每一轮变化可辨认。
-- 按主体视觉轮廓、重心和负空间校准位置与比例。系列作品统一视觉重量和留白，次要细节可以适度越过对齐参考。比例数值由当前作品实测确定。
-- 在同等显示尺寸下比较轮廓、笔触、明暗、场景密度和背景。物件的摆放与支撑关系应符合动作，关键形状在缩小后仍可辨认。
-- 显式选择后保持角色与主要构图连续。重新设计、重抽候选和精确调整属于不同请求，按用户本轮意图执行。
-- 保留生成母版的原生尺寸。尺寸转换与文件导出使用确定性工具；涉及图像内容的修改遵守宿主图像编辑工具的使用规则。
+- Iterate from the latest selected artwork. Describe composition, color, and content changes separately so each revision is easy to assess.
+- Align position and scale by the subject's visual silhouette, center of gravity, and negative space. Keep visual weight and spacing consistent across a series, allowing minor details to cross alignment guides. Derive numerical proportions from the current artwork.
+- Compare outlines, strokes, shading, scene density, and backgrounds at equal display sizes. Object placement and support should make sense for the action; key shapes must remain recognizable when reduced.
+- Preserve character identity and the main composition after selection. Redesigning, generating new candidates, and making precise adjustments are different requests; follow the current intent.
+- Keep generated masters at their native resolution. Use deterministic tools for resizing and export, and follow the host's image-editing rules for changes to image content.
 
-## 交付
+## Delivery
 
-普通请求交付选定图标原稿及缩小预览。需要 iOS 文件时读取 [iOS 导出与验收](references/ios.md)，本技能负责 Icon Composer、资源目录、各外观预览和 Xcode 校验。
+For ordinary requests, deliver the selected source artwork and small-size previews. For iOS files, read [iOS export and validation](references/ios.md). This skill owns Icon Composer, asset catalogs, appearance previews, and Xcode checks.
 
-用户要求透明前景时，明确请求真实 alpha 并保留该文件。已有背景的完整原稿可以作为完整图层交付；只将确实分离的图形描述为独立图层。
+When a transparent foreground is requested, explicitly request true alpha and retain that file. Artwork that already includes a background can be delivered as a complete layer. Describe elements as separate layers only when they are actually separated.
 
-结果保存到用户指定目录或当前任务的独立输出目录，返回可直接查看的图像和本地文件链接。按最后确认的范围整理定稿与必要源文件；压缩包、历史原画和过程记录按需求保留。清理已有文件前核对最新版与必要源文件，保留其他任务的数据。
+Save results to the requested directory or a dedicated task output directory. Return viewable images and local file links. Organize final artwork and necessary source files according to the last confirmed scope; retain archives, earlier artwork, and process records only as needed. Before cleanup, identify the latest result and required sources, and preserve unrelated task data.

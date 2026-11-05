@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""将已确认的方形图稿导出为 iOS 图标，并验证本机渲染与编译。"""
+"""Export approved square artwork as iOS icons and validate native rendering and compilation."""
 
 import argparse
 import json
@@ -22,14 +22,14 @@ def run(*arguments):
 def background(value):
     colors = value.split(",")
     if len(colors) not in (1, 2) or any(not re.fullmatch(r"#[0-9a-fA-F]{6}", color) for color in colors):
-        raise argparse.ArgumentTypeError("背景需要 #RRGGBB 或 #RRGGBB,#RRGGBB")
+        raise argparse.ArgumentTypeError("Background must be #RRGGBB or #RRGGBB,#RRGGBB")
     return colors if len(colors) == 2 else colors * 2
 
 
 def inspect(source):
     width, height, opaque = run("magick", "identify", "-format", "%w %h %[opaque]", source).split()
     if int(width) != int(height):
-        raise ValueError(f"请先确认方形构图，脚本不自动裁切或拉伸 {source}")
+        raise ValueError(f"Provide approved square artwork; the script will not crop or stretch {source}")
     return opaque.lower() == "true"
 
 
@@ -66,11 +66,11 @@ def compile_icon(source, destination, minimum_ios):
     if "com.apple.actool.errors" in output or "com.apple.actool.warnings" in output:
         raise ValueError(output)
     if not (destination / "Assets.car").is_file():
-        raise ValueError("actool 未产生 Assets.car")
+        raise ValueError("actool did not produce Assets.car")
     for platform in ("CFBundleIcons", "CFBundleIcons~ipad"):
         name = run("plutil", "-extract", platform + ".CFBundlePrimaryIcon.CFBundleIconName", "raw", "-o", "-", destination / "Info.plist")
         if name != "AppIcon":
-            raise ValueError(f"{platform} 图标名未正确编译")
+            raise ValueError(f"{platform} compiled with an unexpected icon name")
 
 
 def export(args, tool, profile):
@@ -80,18 +80,18 @@ def export(args, tool, profile):
     normalize(args.source, assets / "Artwork.png", profile)
     light = args.background or ["#FFFFFF", "#FFFFFF"]
     dark = args.dark_background or light
-    layers = [{"name": "原画", "image-name": "Artwork.png", "glass": False}]
+    layers = [{"name": "Artwork", "image-name": "Artwork.png", "glass": False}]
     fills = [{"value": gradient(light)}]
     if args.dark_background:
         fills.append({"appearance": "dark", "value": gradient(dark)})
     if args.dark_source:
         normalize(args.dark_source, assets / "Dark.png", profile)
         layers[0]["opacity-specializations"] = [{"value": 1}, {"appearance": "dark", "value": 0}]
-        layers.append({"name": "深色原画", "image-name": "Dark.png", "glass": False,
+        layers.append({"name": "Dark artwork", "image-name": "Dark.png", "glass": False,
                        "opacity-specializations": [{"value": 0}, {"appearance": "dark", "value": 1}]})
     write_json(icon / "icon.json", {
         "fill-specializations": fills,
-        "groups": [{"name": "图稿", "layers": layers, "specular": False,
+        "groups": [{"name": "Artwork", "layers": layers, "specular": False,
                     "translucency": {"enabled": False, "value": 0},
                     "shadow": {"kind": "none", "opacity": 0}}],
         "supported-platforms": {"squares": ["iOS"]},
@@ -111,7 +111,7 @@ def export(args, tool, profile):
                 "--width", points, "--height", points, "--scale", scale, "--output-file", destination)
             dimensions = run("magick", "identify", "-format", "%w %h", destination)
             if dimensions != f"{points * scale} {points * scale}":
-                raise ValueError(f"预览尺寸错误 {destination}")
+                raise ValueError(f"Unexpected preview dimensions: {destination}")
 
     catalog = args.output / "AppIcon.appiconset"
     if args.asset_catalog:
@@ -141,7 +141,7 @@ def export(args, tool, profile):
         "system_derived": list(RENDITIONS[2:] if custom_dark else RENDITIONS[1:]),
         "minimum_ios": args.minimum_ios,
         "native_previews": 18, "compiled": ["Icon Composer", "Asset catalog"] if args.asset_catalog else ["Icon Composer"],
-        "visual_review": "请查看 previews 中各外观和小尺寸图像",
+        "visual_review": "Inspect the appearances and small-size images in previews",
     }, ensure_ascii=False, indent=2))
 
 
@@ -153,43 +153,43 @@ def main():
     parser.add_argument("--dark-source", type=Path)
     parser.add_argument("--dark-background", type=background)
     parser.add_argument("--asset-catalog", action="store_true")
-    parser.add_argument("--minimum-ios", default="18.0", help="与目标项目一致的最低 iOS 版本，默认 18.0")
+    parser.add_argument("--minimum-ios", default="18.0", help="Minimum iOS version matching the target project (default: 18.0)")
     args = parser.parse_args()
     if not re.fullmatch(r"\d+(\.\d+){0,2}", args.minimum_ios):
-        parser.error("最低 iOS 版本需要形如 18.0 的版本号")
+        parser.error("Minimum iOS version must be a version number such as 18.0")
     args.source = args.source.resolve()
     args.output = args.output.absolute()
     if args.dark_source:
         args.dark_source = args.dark_source.resolve()
     if os.path.lexists(args.output):
-        parser.error("输出目录已存在，请选择新的目录")
+        parser.error("Output directory already exists; choose a new directory")
     for command in ("magick", "xcrun", "xcode-select", "plutil"):
         if not shutil.which(command):
-            parser.error(f"缺少 {command}，请配置 macOS、完整 Xcode 和 ImageMagick 7")
+            parser.error(f"Missing {command}; configure macOS, full Xcode, and ImageMagick 7")
     developer = Path(os.environ.get("DEVELOPER_DIR") or run("xcode-select", "-p")).resolve()
     tool = developer.parent / "Applications/Icon Composer.app/Contents/Executables/ictool"
     profile = Path("/System/Library/ColorSync/Profiles/sRGB Profile.icc")
     if not tool.is_file() or not profile.is_file():
-        parser.error("当前 Xcode 缺少 Icon Composer，或系统缺少 sRGB 色彩配置")
+        parser.error("The selected Xcode lacks Icon Composer, or the system sRGB profile is missing")
     opaque = inspect(args.source)
     if not opaque and not args.background:
-        parser.error("透明前景需要 --background 指定已确认的背景")
+        parser.error("Transparent foregrounds require an approved --background")
     if opaque and args.background:
-        parser.error("完整原稿已有背景，--background 仅用于透明前景")
+        parser.error("Complete artwork already has a background; --background is for transparent foregrounds")
     if opaque and args.dark_background and not args.dark_source:
-        parser.error("完整原稿请提供 --dark-source，单改背景无法改变画稿")
+        parser.error("Complete artwork requires --dark-source; a background alone cannot change the image")
     if args.dark_source:
         dark_opaque = inspect(args.dark_source)
         if not dark_opaque and not args.dark_background:
-            parser.error("透明深色前景需要 --dark-background")
+            parser.error("Transparent dark foregrounds require --dark-background")
         if dark_opaque and args.dark_background:
-            parser.error("深色原稿已有背景，--dark-background 仅用于透明前景")
+            parser.error("Dark artwork already has a background; --dark-background is for transparent foregrounds")
     args.output.parent.mkdir(parents=True, exist_ok=True)
     args.output.mkdir()
     try:
         export(args, tool, profile)
     except BaseException:
-        # 输出目录由本次独占创建，失败时避免留下看似完整的交付物。
+        # This run exclusively created the output directory; remove incomplete deliverables on failure.
         shutil.rmtree(args.output)
         raise
 

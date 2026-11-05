@@ -1,25 +1,25 @@
-# 提示词组织
+# Prompt structure
 
-从用户请求补齐本轮需要的字段即可。明确的主体、自然的动作关系和清楚的轮廓比堆叠风格形容词更重要。
+Fill only the fields needed for the current request. A clear subject, natural action, and readable silhouette matter more than a long list of style adjectives.
 
 ```text
-用途与主题：<场景所表达的产品动作或体验>
-主体与关系：<一个视觉中心、必要动作和辅助物件>
-画风：清晰而稍有手绘感的深色描边，柔和色块，少量明暗塑形，表情和动作自然。
-构图：<主体方向、视觉重心、取景和留白要求>。主体与辅助物件作为一组，保持比例与空间关系；顶部和左右有清楚的背景留白，不让场景挤满画布。<如已确认贴底，明确保留底部承接关系>。
-配色：<已确认的主体、背景色或配色文件中的相关色值>。
-背景：<简洁实底或指定渐变>。
-交付：独立的完整方形画面，方形外边界，避免文字、展示框、设备模型与拼图版面。
-本次调整：<仅在修改已有原画时，说明改变的位置与需要保留的识别特征>。
+Purpose and theme: <the product action or experience expressed by the scene>
+Subject and relationship: <one visual focus, the necessary action, and supporting objects>
+Style: Clear, slightly hand-drawn dark outlines, soft color blocks, restrained shading, and natural expressions and actions.
+Composition: <direction, visual center of gravity, framing, and spacing>. Treat the subject and supporting objects as one group, preserving proportions and spatial relationships. Leave clear background space above and on both sides; do not crowd the canvas. <Explicitly preserve bottom grounding when already approved.>
+Palette: <approved subject and background colors, or relevant values from the palette file>
+Background: <a simple solid fill or the specified gradient>
+Output: One complete standalone square image with square outer edges. Avoid text, presentation frames, device mockups, and collage layouts.
+Current edit: <for edits only, specify what changes and which identifying features remain>
 ```
 
-需要透明前景时，用真实透明背景替换背景描述，并在支持透明的工具参数中指定透明输出。
+For a transparent foreground, replace the background description with a true transparent background request and enable transparency in the tool's supported parameters.
 
-场景可以来自阅读、园艺、出行、创作等不同任务。根据产品选择主体与道具，案例中的行业、人物造型、颜色和构图比例不作为固定默认值。
+Scenes may involve reading, gardening, travel, creation, or other tasks. Select subjects and props for the product; example industries, character designs, colors, and composition ratios are not fixed defaults.
 
-## 使用外部参考
+## External references
 
-用户提供的原画是编辑依据，外部作品用于理解画风、简化方式或构图。引用其他技能时先读取其适用范围与运行条件。`ip-as-logo` 的轮廓简化、`photo-abstract-editorial` 对原始素材与变化范围的区分，可作为设计方法参考；本技能的提示词和脚本独立实现。
+User-supplied artwork is the basis for edits. External works inform style, simplification, or composition. Read another skill's scope and requirements before referencing it. The silhouette simplification in `ip-as-logo` and the distinction between source material and allowed changes in `photo-abstract-editorial` can inform design decisions; this skill's prompts and scripts are independently implemented.
 
 - [IP as Logo](https://github.com/s1dashu/ip-as-logo-skill)
 - [Photo Abstract Editorial](https://github.com/kwhi6693-web/photo-abstract-editorial)
