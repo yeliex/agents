@@ -1,4 +1,4 @@
 interface:
   display_name: "Scene Illustration Icons"
-  short_description: "Hand-drawn scene icons with native iOS export checks"
-  default_prompt: "Use $scene-icon to create a hand-drawn scene illustration icon for this product and complete iOS delivery when needed."
+  short_description: "Hand-drawn character, scene, and object icons"
+  default_prompt: "Use $scene-icon to design hand-drawn illustration icons for this app and prepare iOS assets when requested."

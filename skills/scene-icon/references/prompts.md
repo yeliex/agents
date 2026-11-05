@@ -16,10 +16,3 @@ Current edit: <for edits only, specify what changes and which identifying featur
 For a transparent foreground, replace the background description with a true transparent background request and enable transparency in the tool's supported parameters.
 
 Scenes may involve reading, gardening, travel, creation, or other tasks. Select subjects and props for the product; example industries, character designs, colors, and composition ratios are not fixed defaults.
-
-## External references
-
-User-supplied artwork is the basis for edits. External works inform style, simplification, or composition. Read another skill's scope and requirements before referencing it. The silhouette simplification in `ip-as-logo` and the distinction between source material and allowed changes in `photo-abstract-editorial` can inform design decisions; this skill's prompts and scripts are independently implemented.
-
-- [IP as Logo](https://github.com/s1dashu/ip-as-logo-skill)
-- [Photo Abstract Editorial](https://github.com/kwhi6693-web/photo-abstract-editorial)
