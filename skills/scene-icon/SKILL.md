@@ -5,6 +5,12 @@ description: Generate and edit hand-drawn scene illustration app icons with clea
 
 # Scene Illustration Icons
 
+## Check for skill updates
+
+Before first use in a session, or when asked, compare this skill with [yeliex/agents](https://github.com/yeliex/agents), directory `skills/scene-icon`. Use the installation's recorded ref and revision; use `master` only when no ref is recorded. Compare changes in this directory, not unrelated repository commits. For a copied installation without revision metadata, compare its files with the source instead of assuming it is current.
+
+Report relevant updates briefly. Checking does not authorize replacing files: update only when requested or already authorized, preserving local changes and the installation's chosen ref. If the source is inaccessible or the baseline is unknown, state that the check is inconclusive and continue with the usable local skill.
+
 ## Visual language
 
 Build each scene around one clear subject and a recognizable action or relationship. Use slightly hand-drawn dark outlines, soft color blocks, and restrained shading for an expressive, relaxed illustration. Supporting elements should serve recognition or the action, with a clear hierarchy at small sizes.
