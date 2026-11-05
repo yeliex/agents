@@ -1,0 +1,4 @@
+interface:
+  display_name: "场景插画图标"
+  short_description: "生成手绘场景插画图标，支持原画迭代、系列变体与 iOS 导出验证"
+  default_prompt: "使用 $scene-icon 为当前产品生成手绘场景插画风格的图标，并按需要完成 iOS 交付。"
