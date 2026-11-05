@@ -1,47 +1,66 @@
 # iOS export and validation
 
-Confirm the target system and the project's icon format. Check Apple's current requirements and the appearances supported by the installed Xcode. The included script packages approved square artwork while preserving its proportions and composition. Complete the [composition and artwork scale check](../SKILL.md#composition-and-artwork-scale) first: the script does not automatically shrink an overcrowded subject, and successful compilation does not replace this check.
+The agent performs this workflow with available design tools, Icon Composer, and Xcode. This skill does not bundle an exporter or require a separate Python/ImageMagick runtime. Keep any task-specific commands and generated files in the task's output directory.
 
-## Environment and commands
+Confirm the target system, minimum deployment version, icon name, and the project's existing icon format. Check the current Apple guidance linked below. Complete the [composition and artwork scale check](../SKILL.md#composition-and-artwork-scale) before export; resizing an image or compiling a resource does not establish that its composition works.
 
-Generate images with the host's image tool. The iOS export script requires macOS, a selected full Xcode installation, Icon Composer, Python 3.9+, and ImageMagick 7's `magick` command.
+## Prepare the artwork
 
-Resolve the script path relative to this skill directory and use absolute input and output paths. The output directory must not already exist. Set `--minimum-ios` to the project's minimum deployment target; the default is 18.0.
+1. Inspect the approved sources, dimensions, color profiles, and alpha channels. Preserve the original files and choose a new output location unless replacement is authorized.
+2. Prepare a 1024 × 1024 square iOS master using an available export tool. Preserve proportions and the approved subject/prop relationships. Do not stretch, silently crop, or enlarge the scene to fill the canvas. Use sRGB unless the project explicitly requires another profile.
+3. Keep square outer edges on source images; the system applies its mask. The default full-color background should cover the canvas. Retain true alpha for separate foreground layers and appearances that need it.
+4. Keep a complete illustration as a complete layer when that is the approved source. Only describe a background or foreground as editable separately when those layers actually exist. A custom dark background cannot recolor an opaque full-scene image.
+
+## Prepare the native resource
+
+Choose the format required by the project or delivery request; do not automatically produce both formats.
+
+- **Icon Composer:** Create or open the document, import the approved image or existing layers, preserve placement and appearance, and save `AppIcon.icon` (or the project's chosen name). Configure an editable background only for separated foregrounds. Inspect material effects before applying them; packaging must not silently change the selected illustration. Use the current Icon Composer UI or an existing supported project workflow, rather than treating a hand-written `icon.json` schema as a stable public API.
+- **Asset catalog:** Add the approved master to the project's `AppIcon.appiconset` within an `.xcassets` catalog. Follow the project's single-size or individual-size configuration. Add custom dark/tinted assets only when available and requested; current Apple guidance uses a transparent background for a custom Dark asset and grayscale for Tinted. Do not generate extra variants by assumption.
+
+Use the host's computer-use capability for app UI interaction. If there is an existing native resource, work from a copy and retain its settings unless a change is required. When adding an `.icon` file to an app, check the project's existing catalog configuration: Icon Composer can replace its existing app icon, so do not assume both resources will be used together.
+
+Native compilation requires macOS and a selected full Xcode installation. Check the selected tools with `xcode-select -p` and `xcrun --find actool`. Icon Composer may also be installed separately for design work. Do not make image-only delivery depend on installing Xcode.
+
+## Render and inspect previews
+
+Use Icon Composer to review the appearances supported by the selected toolchain and target system: default, dark, and the supported clear/tinted variants. Export a larger view and actual small display sizes relevant to the app, such as 60 pt and 29 pt. Derive pixel dimensions from the chosen display scale; these examples are not a universal required preview count.
+
+For an existing `.icon` document, the installed `ictool` can render previews directly. Inspect its help first; the following example uses the tool bundled with the selected Xcode. Replace the paths and create the preview directory before running it:
 
 ```sh
-python3 <skill-directory>/scripts/export_ios.py \
-  --source /project/icon-source.png \
-  --output /project/outputs/AppIcon
+task_developer_dir="${DEVELOPER_DIR:-$(xcode-select -p)}"
+task_ictool="$task_developer_dir/../Applications/Icon Composer.app/Contents/Executables/ictool"
+"$task_ictool" --help
+"$task_ictool" /project/AppIcon.icon --export-image \
+  --platform iOS --rendition Default --width 60 --height 60 --scale 2 \
+  --output-file /project/icon-work/previews/Default-60pt@2x.png
 ```
 
-Complete artwork can be passed directly. Transparent foregrounds require an explicit background, either a solid color or a two-color gradient from top left to bottom right.
+Use only rendition names and options supported by that installation. If the executable is unavailable, use Icon Composer's export UI; do not invent CLI flags. Rendered preview images are presentation artifacts, not replacements for unmasked source artwork.
+
+Open the previews and inspect clipping, top/side spacing, small-size recognition, and separation from backgrounds. Compare variants at equal sizes. Without custom dark artwork, the system Dark appearance may resemble Default. Clearly distinguish supplied custom artwork from system-derived appearances. Merely creating preview files does not establish visual adaptation.
+
+## Compile and deliver
+
+When a target project is available, use its configured Xcode build to validate integration. For standalone resource delivery, the agent can invoke `actool` directly without a skill-specific wrapper.
+
+Set `task_icon_input` to the `.icon` document or the containing `.xcassets` catalog, `task_icon_name` to the resource name, `task_minimum_ios` to the target deployment version, and `task_compile_dir` to a new task-owned scratch directory. Match the target-device flags to the app; this example includes iPhone and iPad:
 
 ```sh
-python3 <skill-directory>/scripts/export_ios.py \
-  --source /project/foreground.png \
-  --background '#E1E8DF,#B1C3AE' \
-  --dark-background '#606C5E,#2F382E' \
-  --asset-catalog \
-  --output /project/outputs/AppIcon
+xcrun actool "$task_icon_input" --platform iphoneos \
+  --target-device iphone --target-device ipad \
+  --minimum-deployment-target "$task_minimum_ios" --app-icon "$task_icon_name" \
+  --output-format human-readable-text --errors --warnings --notices \
+  --output-partial-info-plist "$task_compile_dir/Info.plist" \
+  --compile "$task_compile_dir"
 ```
 
-These colors demonstrate the argument format only. For other gradient directions, prepare the background in the approved complete artwork and pass that as a complete layer.
+Inspect the exit status and diagnostics, confirm that `Assets.car` exists, and check the generated icon name in `Info.plist` for the selected devices. Resolve relevant warnings instead of assuming a zero exit status proves every appearance is suitable. Standalone compilation does not prove integration into an app that was not built.
 
-Pass separately approved dark artwork with `--dark-source /project/dark-source.png`. A transparent dark foreground also requires `--dark-background`. Background arguments only change the background behind a transparent foreground. Complete artwork needs a separate dark image or the system-rendered appearance.
+Deliver the approved master, required editable/native resources, and inspected previews. Record the toolchain and checks actually completed. Remove only scratch files created for this task when no longer needed; preserve sources and unrelated outputs. Do not add a reusable exporter or test suite to the skill as part of delivery.
 
-## Outputs and checks
-
-- `AppIcon.icon` contains normalized image layers and the specified background. Transparent foregrounds retain alpha and the background remains editable. Complete artwork stays a complete layer.
-- `default.png`, and `dark.png` when a custom dark appearance is supplied, are 1024 × 1024 sRGB square exports.
-- `previews/` contains six appearances rendered by the installed Icon Composer, including 60 pt and 29 pt previews at 2×. These sizes serve the current check; add previews for other actual placements as needed.
-- `--asset-catalog` also creates `AppIcon.appiconset` for projects that need an asset catalog.
-- The script uses `actool` to validate iPhone and iPad compilation, then removes temporary build files. Its terminal report distinguishes custom and system-derived appearances and records the checks performed.
-
-Open previews to inspect system clipping, edges, small-size recognition, separation against dark backgrounds, and identifying features in clear and tinted appearances. Compilation proves that the current toolchain can process the resources; appearance quality still requires visual inspection. Without a custom dark design, system Dark may look identical to Default. Supply approved dark artwork or a transparent foreground with a dark background when a different dark design is needed. Generating a preview file does not establish visual adaptation.
-
-The default full-color background should cover the square canvas. Apply transparency rules according to the asset's role and appearance; separate foregrounds may be transparent. The script's default and custom dark PNGs are complete artwork composited over confirmed backgrounds. For a transparent Dark resource that uses the system background, follow the target project's convention with the original transparent layer.
-
-If only image generation is available, deliver artwork and small-size previews first. If Xcode is unavailable, list the native previews and compilation checks that remain unverified. Do not describe a simulated rounded-corner image as a system-validated preview.
+If native tools are unavailable, deliver the artwork and available small-size previews, and identify the native rendering or compilation checks that remain unverified. Do not describe a simulated rounded-corner preview as system-validated.
 
 ## Sources
 

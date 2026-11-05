@@ -46,7 +46,7 @@ If image tools are unavailable, explain the missing capability and complete what
 
 ## Delivery
 
-For ordinary requests, deliver the selected source artwork and small-size previews. For iOS files, read [iOS export and validation](references/ios.md). This skill owns Icon Composer, asset catalogs, appearance previews, and Xcode checks.
+For ordinary requests, deliver the selected source artwork and small-size previews. For iOS files, follow [iOS export and validation](references/ios.md) using the available design tools, Icon Composer, and Xcode directly. This skill owns the workflow and checks; it does not bundle a dedicated export script.
 
 When a transparent foreground is requested, explicitly request true alpha and retain that file. Artwork that already includes a background can be delivered as a complete layer. Describe elements as separate layers only when they are actually separated.
 
