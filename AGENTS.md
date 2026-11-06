@@ -41,7 +41,7 @@ When your changes create orphans:
 
 - For multi-step tasks, briefly state the outcome, plan, and completion criteria.
 - Persist plans or context only when needed to resume work; prefer the conversation directory and keep these files out of commits unless explicitly required.
-- Save generated or downloaded files in the conversation directory or a conversation-specific temporary directory.
+- Save files generated or downloaded for this task under the conversation's working directory. Move downloads saved elsewhere into it.
 - Match the deliverable to the request: an audit produces findings; an implementation produces a working change.
 - Complete the requested deliverable and relevant verification; report unresolved blockers.
 - Use the smallest sufficient verification for the change and satisfy required repository checks before committing.
@@ -95,7 +95,8 @@ Use `apply_patch` for local file edits. Do not create or edit files with `cat` o
 
 ## Rules
 
-- Always use 简体中文 for responses, plans, and comments, unless explicitly asked otherwise.
+- Communicate with the user in 简体中文, including responses, progress updates, and plans, unless explicitly asked otherwise.
+- Write code comments, documentation, commit messages, and issue/PR/MR content in English for public open-source projects and 简体中文 for private projects, regardless of hosting platform.
 - If SSH is blocked by 1Password TouchID, use the configured `OP_SERVICE_ACCOUNT_TOKEN` with `op` CLI to obtain the Codex SSH key. Don't use computer-use to access 1Password or expose credentials in output.
 - Use `Computer Use` when system or app UI interaction is needed.
 - `lark-cli` depends on keychain access. When sandbox restrictions require additional permission, use the host's supported approval mechanism. In an unrestricted environment, run directly without requesting redundant elevation.
