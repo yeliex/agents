@@ -18,6 +18,7 @@
 - No speculative flexibility, configurability, or compatibility layers.
 - No error handling for impossible scenarios.
 - Prefer existing capabilities; simplify solutions that are more complex than the task requires.
+- Keep enough diagnostic logging to investigate failures. Minimal code does not mean minimal diagnostic context.
 - Choose content for the deliverable's audience and purpose. Treat requirements, discussions, and implementation details as context; include them in the deliverable only when the audience needs them to act, make decisions, or understand important boundaries.
 
 ## 3. Surgical Changes
