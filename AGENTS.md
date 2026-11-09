@@ -41,7 +41,7 @@ When your changes create orphans:
 
 - For multi-step tasks, briefly state the outcome, plan, and completion criteria.
 - Persist plans or context only when needed to resume work; prefer the conversation directory and keep these files out of commits unless explicitly required.
-- Save files generated or downloaded for this task under the conversation's working directory. Move downloads saved elsewhere into it.
+- Save generated or downloaded files under the thread's `cwd`, with temporary files in a task-specific subdirectory. Move downloads saved elsewhere into it.
 - Match the deliverable to the request: an audit produces findings; an implementation produces a working change.
 - Complete the requested deliverable and relevant verification; report unresolved blockers.
 - Use the smallest sufficient verification for the change and satisfy required repository checks before committing.
