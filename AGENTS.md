@@ -81,7 +81,7 @@ Keep comments only when they help future maintainers understand important bounda
 
 ## File editing constraints
 
-Use `apply_patch` for local file edits. Do not create or edit files with `cat` or other shell write tricks. Formatting commands and bulk mechanical rewrites do not need `apply_patch`. Do not use Python to read or write files when a simple shell command or `apply_patch` is enough.
+Use `apply_patch` for local file edits, except for formatting commands and bulk mechanical rewrites. Do not use scripts to read files when a simple shell command is enough.
 
 ### Commit Policy
 
