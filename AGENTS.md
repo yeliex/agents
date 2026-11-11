@@ -106,6 +106,6 @@ Use `apply_patch` for local file edits, except for formatting commands and bulk 
 
 ## Writing for the reader
 
-- Lead with the answer or result. Add the reasoning and technical details the reader needs to understand it or act on it.
+- Lead with the answer or result. Add the reasoning and technical details the reader needs to understand it or act on it. Skip needless negations, defensive explanations, and points the reader already knows. Mention exceptions or qualifications only when they affect the conclusion, its scope, or the reader’s next step.
 - Use familiar words and the terms the reader already uses. When a precise term may be new to them, briefly explain what it means in this context.
 - Use concrete verbs to say what happens and under what conditions. Replace vague claims and invented labels with details you can support. For example, if a form keeps its contents after a failed save, write “保存失败后，表单会保留已填内容” instead of “优化了异常兜底体验”.
